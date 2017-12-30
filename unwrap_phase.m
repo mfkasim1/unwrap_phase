@@ -5,6 +5,14 @@
 %     reliability following a noncontinuous path", Applied Optics, Vol. 41,    %
 %     Issue 35, pp. 7437-7444 (2002).                                          %
 %                                                                              %
+% If using this code for publication, please kindly cite the following:        %
+% * M. A. Herraez, D. R. Burton, M. J. Lalor, and M. A. Gdeisat, "Fast         %
+%   two-dimensional phase-unwrapping algorithm based on sorting by reliability %
+%   following a noncontinuous path", Applied Optics, Vol. 41, Issue 35,        %
+%   pp. 7437-7444 (2002).                                                      %
+% * M. F. Kasim, "Fast 2D phase unwrapping implementation in MATLAB",          %
+%   https://github.com/mfkasim91/unwrap_phase/ (2017).                         %
+%                                                                              %
 % Input:                                                                       %
 % * img: The wrapped phase image either from -pi to pi or from 0 to 2*pi.      %
 %        If there are unwanted regions, it should be filled with NaNs.         %
