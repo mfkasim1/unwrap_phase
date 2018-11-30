@@ -50,6 +50,7 @@ function res_img = unwrap_phase(img)
     for i = 1:size(is_grouped,1)
         group_members{i} = i;
     end
+    num_members_group = ones(Ny*Nx,1);
 
     % propagate the unwrapping
     res_img = img;
@@ -63,13 +64,20 @@ function res_img = unwrap_phase(img)
         if (group(idx1) == group(idx2)) continue; end
 
         % idx1 should be ungrouped (swap if idx2 ungrouped and idx1 grouped)
-        % otherwise, activate the flag all_grouped
+        % otherwise, activate the flag all_grouped.
+        % The group in idx1 must be smaller than in idx2. If initially
+        % group(idx1) is larger than group(idx2), then swap it.
         all_grouped = 0;
         if is_grouped(idx1)
             if ~is_grouped(idx2)
                 idxt = idx1;
                 idx1 = idx2;
                 idx2 = idxt;
+            elseif num_members_group(group(idx1)) > num_members_group(group(idx2))
+                idxt = idx1;
+                idx1 = idx2;
+                idx2 = idxt;
+                all_grouped = 1;
             else
                 all_grouped = 1;
             end
@@ -79,8 +87,10 @@ function res_img = unwrap_phase(img)
         dval = floor((res_img(idx2) - res_img(idx1) + pi) / (2*pi)) * 2*pi;
 
         % which pixel should be changed
+        g1 = group(idx1);
+        g2 = group(idx2);
         if all_grouped
-            pix_idxs = group_members{group(idx1)};
+            pix_idxs = group_members{g1};
         else
             pix_idxs = idx1;
         end
@@ -91,12 +101,11 @@ function res_img = unwrap_phase(img)
         end
 
         % change the group
-        g1 = group(idx1);
-        g2 = group(idx2);
-        len_g1 = length(group_members{g1});
-        group_members{g2}(end+1:end+len_g1) = group_members{g1};
-        group_members{g1} = [];
-        group(pix_idxs) = g2;
+        len_g1 = num_members_group(g1);
+        len_g2 = num_members_group(g2);
+        group_members{g2}(len_g2+1:len_g2+len_g1) = pix_idxs;
+        group(pix_idxs) = g2; % assign the pixels to the new group
+        num_members_group(g2) = num_members_group(g2) + len_g1;
 
         % mark idx1 and idx2 as already being grouped
         is_grouped(idx1) = 1;
