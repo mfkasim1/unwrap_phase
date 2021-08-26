@@ -20,3 +20,7 @@ https://github.com/mfkasim91/unwrap_phase/ (2017).
   (make sure that the file is included in MATLAB search path)
 * The function to use is `unwrap_phase`
 * Examples of using the code is given in the `test_unwrap_phase.m` file
+
+### If this algorithm fails ...
+
+Please try the [`unwrap_phase`](https://scikit-image.org/docs/stable/api/skimage.restoration.html?highlight=unwrap_phase#skimage.restoration.unwrap_phase) by scikit-image in Python. It has a better implementation.
